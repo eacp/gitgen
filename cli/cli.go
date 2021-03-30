@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"eacp.dev/gitgen"
+	"github.com/eacp/gitgen"
 )
 
 func main() {

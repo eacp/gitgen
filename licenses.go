@@ -2,6 +2,7 @@ package gitgen
 
 import (
 	"io"
+	"strings"
 )
 
 // GetLicenseText returns the text of a license
@@ -25,4 +26,50 @@ func WriteLicense(key string, w io.Writer) (n int, err error) {
 	}
 
 	return w.Write(data)
+}
+
+// GetLicWithParams gets a license and adds the fullname and the
+// year parameters to the license. Not all the licenses
+// allow these fields
+func GetLicWithParams(key, fullname, year string) string {
+	txt := GetLicenseText(key)
+
+	// This is a different function for testability
+	return replaceString(txt, fullname, year)
+}
+
+func replaceString(fullText, fullname, year string) string {
+	// Create a Replacer
+	r := strings.NewReplacer(
+		"[year]", year,
+		"[yyyy]", year,
+		"[fullname]", fullname,
+		"[name of copyright owner]", fullname,
+	)
+
+	// Execute the replacer
+	return r.Replace(fullText)
+}
+
+func WriteLicWithParams(key, fullname, year string,
+	w io.Writer) (int, error) {
+	// Get the text
+	txt := GetLicenseText(key)
+
+	// Call the helper function
+	return replaceWrite(txt, fullname, year, w)
+}
+
+func replaceWrite(fullText, fullname, year string,
+	w io.Writer) (int, error) {
+	// Create a Replacer
+	r := strings.NewReplacer(
+		"[year]", year,
+		"[yyyy]", year,
+		"[fullname]", fullname,
+		"[name of copyright owner]", fullname,
+	)
+
+	// Write it
+	return r.WriteString(w, fullText)
 }
