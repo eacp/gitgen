@@ -15,6 +15,8 @@ func GetIgnoreText(key string) string {
 	return string(raw)
 }
 
+// WriteIgnore writes a .gitignore template to an
+// io.Writer. It can be a file, a http response, etc
 func WriteIgnore(key string, w io.Writer) (n int, err error) {
 	// get the data from the embeded file
 	data, err := asset("ignores/" + key + ".gitignore")

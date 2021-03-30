@@ -14,6 +14,8 @@ func GetLicenseText(key string) string {
 	return string(raw)
 }
 
+// WriteLicense writes a license to a writer. It can be a file, a
+// http response, etc
 func WriteLicense(key string, w io.Writer) (n int, err error) {
 	// get the data from the embeded file
 	data, err := asset("licenses/" + key + ".txt")
