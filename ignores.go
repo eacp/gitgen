@@ -13,7 +13,7 @@ var assets embed.FS
 // name. All files come from Github
 func GetIgnoreText(key string) string {
 	// Get raw embeded bytes
-	raw, _ := assets.ReadFile("assets/ignores/" + key + ".txt")
+	raw, _ := assets.ReadFile("assets/ignores/" + key + ".gitignore")
 
 	// Make them a string
 	return string(raw)
@@ -21,7 +21,7 @@ func GetIgnoreText(key string) string {
 
 func WriteIgnore(key string, w io.Writer) (n int, err error) {
 	// get the data from the embeded file
-	data, err := assets.ReadFile("assets/ignores/" + key + ".txt")
+	data, err := assets.ReadFile("assets/ignores/" + key + ".gitignore")
 
 	if err != nil {
 		return
