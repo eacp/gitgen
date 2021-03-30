@@ -1,6 +1,9 @@
 package gitgen
 
-import "testing"
+import (
+	"bytes"
+	"testing"
+)
 
 const fullMIT = `MIT License
 
@@ -65,6 +68,34 @@ func TestGetLicenseText(t *testing.T) {
 			if got := GetLicenseText(tt.key); got != tt.want {
 				t.Errorf("GetIgnoreText() = %v, want %v", got, tt.want)
 			}
+		})
+	}
+}
+
+func TestWriteLicense(t *testing.T) {
+	tests := []struct {
+		name, key, want string
+	}{
+		{"MIT License", "mit", fullMIT},
+		{"Boost Software License", "bsl-1.0", fullBSL},
+		{"Does not exists", "lol", ""},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Instead of just getting the string, this time
+			// the function uses an io.Writer
+
+			w := new(bytes.Buffer)
+
+			// Read the gitignore and write it to the test writer
+			WriteLicense(tt.key, w)
+
+			// Compare the data
+			if got := w.String(); got != tt.want {
+				t.Errorf("GetIgnoreText() = %v, want %v", got, tt.want)
+			}
+
 		})
 	}
 }

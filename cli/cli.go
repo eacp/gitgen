@@ -16,12 +16,17 @@ func main() {
 
 	switch os.Args[1] {
 	case "license":
-		break
-	case "ignore", "gitignore":
+		fmt.Println("Implementation pending")
+	case "ignore", "gitignore", "g", "i":
 		// Output a git ignore file
 		gitignore := gitgen.GetIgnoreText(os.Args[2])
 
 		fmt.Print(gitignore)
+	case "help", "h":
+
+		fmt.Println("Use this cli tool to generate .gitignore files" + " or license files. If you want the data to go to a specific " +
+			"file, use the > or the >> operator")
+
 	default:
 		println("Invalid option")
 	}
