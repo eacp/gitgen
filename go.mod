@@ -1,3 +1,3 @@
-module eacp.dev/gitgen
+module github.com/eacp/gitgen
 
 go 1.16
