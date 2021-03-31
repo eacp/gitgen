@@ -71,9 +71,14 @@ func makeLicenseReplacer(fullname, year string) *strings.Replacer {
 
 	// More things like [YY] could be added here
 	return strings.NewReplacer(
+		// Normal style
 		"[year]", year,
 		"[yyyy]", year,
+		// Long style used by apache
 		"[fullname]", fullname,
 		"[name of copyright owner]", fullname,
+		// Style used by GNU
+		"<year>", year,
+		"<name of author>", fullname,
 	)
 }

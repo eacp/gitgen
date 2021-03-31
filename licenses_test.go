@@ -97,6 +97,14 @@ func Test_replaceString(t *testing.T) {
 			},
 			"Copyright (c) 2021 eacp",
 		},
+		{
+			"GNU Test",
+			args{
+				"Copyright (C) <year>  <name of author>",
+				"eacp", "2021",
+			},
+			"Copyright (C) 2021  eacp", // Notice the double space
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -141,6 +149,15 @@ func Test_replaceWrite(t *testing.T) {
 				"eacp", "2021",
 			},
 			"Copyright (c) 2021 eacp",
+		},
+
+		{
+			"GNU Test",
+			args{
+				"Copyright (C) <year>  <name of author>",
+				"eacp", "2021",
+			},
+			"Copyright (C) 2021  eacp", // Notice the double space
 		},
 	}
 	for _, tt := range tests {
@@ -187,6 +204,13 @@ func TestGetLicWithParams(t *testing.T) {
 			args{"apache-2.0", "eacp", "2021"},
 			"Copyright 2021 eacp",
 		},
+
+		{
+			"GPL test (uses <>)",
+			args{"gpl-3.0", "eacp", "2021"},
+			// Notice the 2 spaces
+			"Copyright (C) 2021  eacp",
+		},
 	}
 	for _, tt := range tests {
 
@@ -230,6 +254,13 @@ func TestWriteLicWithParams(t *testing.T) {
 			"Apache test ([name of copyright owner] & [year])",
 			args{"apache-2.0", "eacp", "2021"},
 			"Copyright 2021 eacp",
+		},
+
+		{
+			"GPL test (uses <>)",
+			args{"gpl-3.0", "eacp", "2021"},
+			// Notice the 2 spaces
+			"Copyright (C) 2021  eacp",
 		},
 	}
 	for _, tt := range tests {
