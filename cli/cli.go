@@ -55,7 +55,8 @@ func cli(args []string, out testableWriter) (fail bool, msg string) {
 		// Write to stdout (or test out) and check if the file
 		// could be retrieved
 		if _, err := gitgen.WriteIgnore(args[2], out); err != nil {
-			return true, err.Error()
+			return true,
+				fmt.Sprintf("'%v' gitignore template does not exist", args[2])
 		}
 
 	case "license", "lic", "li", "l":

@@ -119,6 +119,27 @@ func Test_cli(t *testing.T) {
 			[]string{"gg.exe", "h", "xd"},
 			true, "Unknown subcommand: 'xd'", "",
 		},
+
+		// Tests for ignore
+		{
+			"Ignore Yeoman",
+			[]string{"gg", "i", "Yeoman"},
+			false, "", fullYeomanIgnore,
+		},
+
+		{
+			"Ignore BAD TEMPLATE NAME",
+			[]string{"gg", "i", "WakandaForever"}, true,
+			"'WakandaForever' gitignore template does not exist",
+			"",
+		},
+
+		{
+			"Ignore INCOMPLETE",
+			[]string{"gg", "ignore"}, true,
+			"Usage: gg [ignore|gitignore|i] [ignore template]",
+			"",
+		},
 	}
 	for _, tt := range tests {
 
@@ -149,3 +170,12 @@ func Test_cli(t *testing.T) {
 		})
 	}
 }
+
+// Output strings for testing purposes
+const fullYeomanIgnore = `node_modules/
+bower_components/
+*.log
+
+build/
+dist/
+`
