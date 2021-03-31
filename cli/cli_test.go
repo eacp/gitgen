@@ -72,6 +72,53 @@ func Test_cli(t *testing.T) {
 			[]string{"gg.exe", "h", "i"},
 			false, "", ignoreHelpText,
 		},
+
+		// License help text
+
+		// help
+		{
+			"Help for the licenses: help license",
+			[]string{"gg.exe", "help", "license"},
+			false, "", licHelpText,
+		},
+
+		{
+			"Help for the licenses: help lic",
+			[]string{"gg.exe", "help", "lic"},
+			false, "", licHelpText,
+		},
+
+		{
+			"Help for the licenses: help l",
+			[]string{"gg.exe", "help", "l"},
+			false, "", licHelpText,
+		},
+
+		// h
+		{
+			"Help for the licenses: h license",
+			[]string{"gg.exe", "h", "license"},
+			false, "", licHelpText,
+		},
+
+		{
+			"Help for the licenses: h lic",
+			[]string{"gg.exe", "h", "lic"},
+			false, "", licHelpText,
+		},
+
+		{
+			"Help for the licenses h l",
+			[]string{"gg.exe", "h", "l"},
+			false, "", licHelpText,
+		},
+
+		// Unknown help
+		{
+			"Help for unknown sub: h xd",
+			[]string{"gg.exe", "h", "xd"},
+			true, "Unknown subcommand: 'xd'", "",
+		},
 	}
 	for _, tt := range tests {
 

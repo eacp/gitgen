@@ -47,11 +47,21 @@ Generate .gitignore s
 
 Generate Licenses
 
+	Generate license files for repos. Outputs to standard output
+
+	Flags:
+		-y string 
+			The year that will appear in some licenses
+		-n string 
+			The name that will appear in some licenses
+
 	Examples
 
-	gitgen lic mit -y 2021 -n eacp
-	gitgen lic apache-2.0 -n eacp -y 2021
-	gitgen lic gpl-2.0 # This one takes no parameters
+		gitgen lic mit -y 2021 -n eacp
+		gitgen lic apache-2.0 -n eacp -y 2021
+		gitgen lic gpl-2.0 # This one takes no parameters
+
+		gitgen lic mit -y 2021 -n eacp > LICENSE # Creates LICENSE file
 
 `
 
@@ -78,3 +88,21 @@ Examples:
 	gitgen i Python >> .gitignore
 
 All templates come from github.com`
+
+const licHelpText = `Generate Licenses
+
+Generate license files for repos. Outputs to standard output
+
+Flags:
+	-y string 
+		The year that will appear in some licenses
+	-n string 
+		The name that will appear in some licenses
+
+Examples
+
+	gitgen lic mit -y 2021 -n eacp
+	gitgen lic apache-2.0 -n eacp -y 2021
+	gitgen lic gpl-2.0 # This one takes no parameters
+
+	gitgen lic mit -y 2021 -n eacp > LICENSE # Creates LICENSE file`

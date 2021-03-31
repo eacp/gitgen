@@ -39,7 +39,7 @@ func cli(args []string, out testableWriter) (fail bool, msg string) {
 		if tokens == 2 {
 			out.WriteString(helpText)
 		} else {
-			printHelp(args[2], out)
+			return printHelp(args[2], out)
 		}
 
 	case "ignore", "gitignore", "i":
@@ -76,13 +76,15 @@ func printHelp(subCommand string,
 
 	case "license", "lic", "l":
 		// Print the help for the license
-		out.WriteString("PENDING HELP TEXT")
+		out.WriteString(licHelpText)
 
 	default:
-
 		// Unknown sub command
-		return true,
-			fmt.Sprintf("Unknown subcommand: '%v'", subCommand)
+
+		// Set returns accordingly
+
+		bad = true
+		msg = fmt.Sprintf("Unknown subcommand: '%v'", subCommand)
 	}
 
 	return
