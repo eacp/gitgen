@@ -40,12 +40,7 @@ func GetLicWithParams(key, fullname, year string) string {
 
 func replaceString(fullText, fullname, year string) string {
 	// Create a Replacer
-	r := strings.NewReplacer(
-		"[year]", year,
-		"[yyyy]", year,
-		"[fullname]", fullname,
-		"[name of copyright owner]", fullname,
-	)
+	r := makeLicenseReplacer(fullname, year)
 
 	// Execute the replacer
 	return r.Replace(fullText)
@@ -63,13 +58,22 @@ func WriteLicWithParams(key, fullname, year string,
 func replaceWrite(fullText, fullname, year string,
 	w io.Writer) (int, error) {
 	// Create a Replacer
-	r := strings.NewReplacer(
+	r := makeLicenseReplacer(fullname, year)
+
+	// Write it
+	return r.WriteString(w, fullText)
+}
+
+// A helper function to create a replacer.
+// It is upgradable so more parameters could be aded
+// in the future
+func makeLicenseReplacer(fullname, year string) *strings.Replacer {
+
+	// More things like [YY] could be added here
+	return strings.NewReplacer(
 		"[year]", year,
 		"[yyyy]", year,
 		"[fullname]", fullname,
 		"[name of copyright owner]", fullname,
 	)
-
-	// Write it
-	return r.WriteString(w, fullText)
 }

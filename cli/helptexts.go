@@ -1,0 +1,108 @@
+package main
+
+const helpText = `Gitgen CLI: 
+Generate usefull files for git & github in the command line
+
+This program can generate .gitinore files for a variety of languages
+and frameworks, and a variety of licenses with optional parameters
+
+
+Usage:
+
+Help
+
+	Show help message
+
+	Examples:
+
+		gitgen help|h # Show this message
+
+		gitgen help|h gitignore|ignore|i # Show help for the ignore subcommand
+
+		gitgen help|h license|lic|l # Show help for the license subcommand
+
+Generate .gitignore s
+
+	Call the executable with the ignore, gitignore or i subcommand
+	and specify the ignore template you want to use
+
+	Examples:
+
+		gitgen gitignore Node
+		gitgen i Java
+		gitgen ignore Dart
+		gitgen i Go
+		gitgen gitignore Laravel
+
+		# This line creates the .gitignore file for a 
+		# node repo
+		gitgen i Node > .gitignore
+
+		# You can also concat multiple ignores
+		gitgen i Node >> .gitignore
+		gitgen i Java >> .gitignore
+		gitgen i Python >> .gitignore
+	
+	All templates come from github.com
+
+Generate Licenses
+
+	Generate license files for repos. Outputs to standard output
+
+	Flags:
+		-y string 
+			The year that will appear in some licenses
+		-n string 
+			The name that will appear in some licenses
+
+	Examples
+
+		gitgen lic mit -y 2021 -n eacp
+		gitgen lic apache-2.0 -n eacp -y 2021
+		gitgen lic gpl-2.0 # This one takes no parameters
+
+		gitgen lic mit -y 2021 -n eacp > LICENSE # Creates LICENSE file
+
+`
+
+const ignoreHelpText = `Generate .gitignore s
+
+Call the executable with the ignore, gitignore or i subcommand
+and specify the ignore template you want to use
+
+Examples:
+
+	gitgen gitignore Node
+	gitgen i Java
+	gitgen ignore Dart
+	gitgen i Go
+	gitgen gitignore Laravel
+
+	# This line creates the .gitignore file for a 
+	# node repo
+	gitgen i Node > .gitignore
+
+	# You can also concat multiple ignores
+	gitgen i Node >> .gitignore
+	gitgen i Java >> .gitignore
+	gitgen i Python >> .gitignore
+
+All templates come from github.com`
+
+const licHelpText = `Generate Licenses
+
+Generate license files for repos. Outputs to standard output
+
+Flags:
+	-y string 
+		The year that will appear in some licenses
+	-n string 
+		The name that will appear in some licenses
+
+Examples
+
+	gitgen lic mit -y 2021 -n eacp
+	gitgen lic apache-2.0 -n eacp -y 2021
+	gitgen lic gpl-2.0 # This one takes no parameters
+
+	gitgen lic mit -y 2021 -n eacp > LICENSE # Creates LICENSE file`
