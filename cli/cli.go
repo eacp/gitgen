@@ -9,11 +9,11 @@ import (
 )
 
 func main() {
-	// Act on the sub command
-	fail, errMessage := cli(os.Args, os.Stdout)
 
+	// Act on the sub command
 	// Print to stderr if something went wrong
-	if fail {
+
+	if fail, errMessage := cli(os.Args, os.Stdout); fail {
 		println(errMessage)
 	}
 
@@ -69,13 +69,39 @@ func cli(args []string, out testableWriter) (fail bool, msg string) {
 		}
 
 	case "license", "lic", "li", "l":
-		// This is the more complex one
 
 		// Incomplete command
 		if tokens < 3 {
 			fail = true
 			msg = fmt.Sprintf("Error: Incomplete command. Usage: %v [license|lic|l] [license name] (optional flags -y year -n name)", args[0])
 			return
+		}
+
+		// Write the license to the out (either test, stdout, etc)
+		// given the flags and the argument
+
+		// Check if there are enough params for the year and name
+		if tokens >= 5 {
+
+			// Arguments for year and name present
+
+			// If the license does not exist,
+			// then the written bytes will be 0
+			if n, err := gitgen.WriteLicWithParams(args[2],
+				args[4], args[3], out); n == 0 || err != nil {
+
+				fail = true
+				msg = fmt.Sprintf("Error: Unknown license '%v'", args[2])
+				return
+			}
+
+		} else {
+			// Use only the license as is
+			if _, err := gitgen.WriteLicense(args[2], out); err != nil {
+				fail = true
+				msg = fmt.Sprintf("Error: Unknown license '%v'", args[2])
+				return
+			}
 		}
 
 	default:
