@@ -1,12 +1,22 @@
 package main
 
 import (
+	_ "embed"
 	"fmt"
 	"io"
 	"os"
 
 	"github.com/eacp/gitgen"
 )
+
+//go:embed helpText.txt
+var helpText string
+
+//go:embed ignoreHelpText.txt
+var ignoreHelpText string
+
+//go:embed licHelpText.txt
+var licHelpText string
 
 func main() {
 

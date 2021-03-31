@@ -2,6 +2,7 @@ package gitgen
 
 import (
 	"bytes"
+	_ "embed"
 	"testing"
 )
 
@@ -10,21 +11,15 @@ import (
 
 Both are short so they make sense for testing, and
 I also wanted  to honor Ada Lovelance as well
+
+Use embeding to avoid having giant strings
 */
-const fullAda = `# Object file
-*.o
 
-# Ada Library Information
-*.ali
-`
+//go:embed assets/ignores/Ada.gitignore
+var fullAda string
 
-const fullCUDA = `*.i
-*.ii
-*.gpu
-*.ptx
-*.cubin
-*.fatbin
-`
+//go:embed assets/ignores/CUDA.gitignore
+var fullCUDA string
 
 func TestGetIgnoreText(t *testing.T) {
 	tests := []struct {

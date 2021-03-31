@@ -1,0 +1,23 @@
+Generate .gitignore s
+
+Call the executable with the ignore, gitignore or i subcommand
+and specify the ignore template you want to use
+
+Examples:
+
+	gitgen gitignore Node
+	gitgen i Java
+	gitgen ignore Dart
+	gitgen i Go
+	gitgen gitignore Laravel
+
+	# This line creates the .gitignore file for a 
+	# node repo
+	gitgen i Node > .gitignore
+
+	# You can also concat multiple ignores
+	gitgen i Node >> .gitignore
+	gitgen i Java >> .gitignore
+	gitgen i Python >> .gitignore
+
+All templates come from github.com
