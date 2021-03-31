@@ -216,7 +216,26 @@ func Test_subcommandIgnore(t *testing.T) {
 }
 
 func Test_subcommandLicense(t *testing.T) {
+	tests := []testCase{
+		// Incomplete command
+		{
+			"Incomplete license sub command",
+			[]string{"xd", "lic"}, true,
+			"Error: Incomplete command. Usage: xd [license|lic|l] [license name] (optional flags -y year -n name)", "",
+		},
 
+		// Unknown license
+
+		{
+			"Unknown License",
+			[]string{"xd", "lic", "lol"}, true,
+			"Error: Unknown license 'lol'", "",
+		},
+	}
+
+	for _, tt := range tests {
+		tt.runTest(t)
+	}
 }
 
 // Output strings for testing purposes

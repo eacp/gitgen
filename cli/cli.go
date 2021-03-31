@@ -34,6 +34,15 @@ func cli(args []string, out testableWriter) (fail bool, msg string) {
 
 	tokens := len(args)
 
+	// Avoid panic
+
+	if tokens <= 1 {
+		fail = true
+		msg = fmt.Sprintf("Error: No sub command. Please type %v help for more information", args[0])
+
+		return
+	}
+
 	switch args[1] {
 	case "help", "h":
 		if tokens == 2 {
@@ -61,7 +70,18 @@ func cli(args []string, out testableWriter) (fail bool, msg string) {
 
 	case "license", "lic", "li", "l":
 		// This is the more complex one
-		break
+
+		// Incomplete command
+		if tokens < 3 {
+			fail = true
+			msg = fmt.Sprintf("Error: Incomplete command. Usage: %v [license|lic|l] [license name] (optional flags -y year -n name)", args[0])
+			return
+		}
+
+	default:
+		// Unknown sub
+		fail = true
+		msg = fmt.Sprintf("Error: Unknown subcommand '%v'. Please type xd help for mor information", args[1])
 	}
 
 	return
