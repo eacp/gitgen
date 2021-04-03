@@ -19,10 +19,19 @@ func (tt *testCase) runTest(t *testing.T) {
 	// Create test output
 	tstOut := new(strings.Builder)
 
-	gotFail, gotMsg := cli(tt.args, tstOut)
+	// Create a fake StdErr
+	tstErr := new(strings.Builder)
+
+	cli(tt.args, tstOut, tstErr)
 
 	// Check the output
 	printed := tstOut.String()
+	gotMsg := tstErr.String()
+
+	// It has failed if the len of the error message
+	// is not zero. Which is equal to printing to
+	// stderr
+	gotFail := tstErr.Len() != 0
 
 	t.Run(tt.name, func(t *testing.T) {
 

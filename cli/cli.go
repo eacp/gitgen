@@ -19,13 +19,9 @@ var ignoreHelpText string
 var licHelpText string
 
 func main() {
-
-	// Act on the sub command
-	// Print to stderr if something went wrong
-
-	if fail, errMessage := cli(os.Args, os.Stdout); fail {
-		println(errMessage)
-	}
+	// Pass the os arguments, the std out and the
+	// error out to the cli
+	cli(os.Args, os.Stdout, os.Stderr)
 
 }
 
@@ -38,7 +34,7 @@ type testableWriter interface {
 }
 
 // Make this testable
-func cli(args []string, out testableWriter) (fail bool, msg string) {
+func cli(args []string, out, errOut testableWriter) {
 
 	// Act uppon the sub command
 
@@ -47,8 +43,16 @@ func cli(args []string, out testableWriter) (fail bool, msg string) {
 	// Avoid panic
 
 	if tokens <= 1 {
-		fail = true
+		/*fail = true
 		msg = fmt.Sprintf("Error: No sub command. Please type %v help for more information", args[0])
+
+		return*/
+
+		// Print to the error, which is usally
+		// stderr but not in unit testing
+		fmt.Fprintf(errOut,
+			"Error: No sub command. Please type %v help for more information",
+			args[0])
 
 		return
 	}
@@ -58,7 +62,7 @@ func cli(args []string, out testableWriter) (fail bool, msg string) {
 		if tokens == 2 {
 			out.WriteString(helpText)
 		} else {
-			return printHelp(args[2], out)
+			printHelp(args[2], out, errOut)
 		}
 
 	case "ignore", "gitignore", "i":
@@ -67,23 +71,25 @@ func cli(args []string, out testableWriter) (fail bool, msg string) {
 		// Bad usage
 		if tokens < 3 {
 			// Make error message with the name of the program
-			return true,
-				fmt.Sprintf("Usage: %v [ignore|gitignore|i] [ignore template]", args[0])
+			fmt.Fprintf(errOut, "Usage: %v [ignore|gitignore|i] [ignore template]", args[0])
+
+			return
 		}
 
 		// Write to stdout (or test out) and check if the file
 		// could be retrieved
 		if _, err := gitgen.WriteIgnore(args[2], out); err != nil {
-			return true,
-				fmt.Sprintf("'%v' gitignore template does not exist", args[2])
+			fmt.Fprintf(errOut,
+				"'%v' gitignore template does not exist", args[2])
+
+			return
 		}
 
 	case "license", "lic", "li", "l":
 
 		// Incomplete command
 		if tokens < 3 {
-			fail = true
-			msg = fmt.Sprintf("Error: Incomplete command. Usage: %v [license|lic|l] [license name] (optional flags -y year -n name)", args[0])
+			fmt.Fprintf(errOut, "Error: Incomplete command. Usage: %v [license|lic|l] [license name] (optional flags -y year -n name)", args[0])
 			return
 		}
 
@@ -100,31 +106,27 @@ func cli(args []string, out testableWriter) (fail bool, msg string) {
 			if n, err := gitgen.WriteLicWithParams(args[2],
 				args[4], args[3], out); n == 0 || err != nil {
 
-				fail = true
-				msg = fmt.Sprintf("Error: Unknown license '%v'", args[2])
+				fmt.Fprintf(errOut, "Error: Unknown license '%v'", args[2])
 				return
 			}
 
 		} else {
 			// Use only the license as is
 			if _, err := gitgen.WriteLicense(args[2], out); err != nil {
-				fail = true
-				msg = fmt.Sprintf("Error: Unknown license '%v'", args[2])
+				fmt.Fprintf(errOut, "Error: Unknown license '%v'", args[2])
 				return
 			}
 		}
 
 	default:
 		// Unknown sub
-		fail = true
-		msg = fmt.Sprintf("Error: Unknown subcommand '%v'. Please type xd help for mor information", args[1])
+		fmt.Fprintf(errOut,
+			"Error: Unknown subcommand '%v'. Please type xd help for mor information", args[1])
+		return
 	}
-
-	return
 }
 
-func printHelp(subCommand string,
-	out io.StringWriter) (bad bool, msg string) {
+func printHelp(subCommand string, out, err testableWriter) {
 
 	switch subCommand {
 	case "gitignore", "ignore", "i":
@@ -140,9 +142,6 @@ func printHelp(subCommand string,
 
 		// Set returns accordingly
 
-		bad = true
-		msg = fmt.Sprintf("Unknown subcommand: '%v'", subCommand)
+		fmt.Fprintf(err, "Unknown subcommand: '%v'", subCommand)
 	}
-
-	return
 }
