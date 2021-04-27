@@ -118,6 +118,9 @@ func cli(args []string, out, errOut testableWriter) {
 			}
 		}
 
+	case "list", "ls":
+		listIgnore(out)
+
 	default:
 		// Unknown sub
 		fmt.Fprintf(errOut,
@@ -143,5 +146,13 @@ func printHelp(subCommand string, out, err testableWriter) {
 		// Set returns accordingly
 
 		fmt.Fprintf(err, "Unknown subcommand: '%v'", subCommand)
+	}
+}
+
+func listIgnore(out testableWriter) {
+	ignores := gitgen.ListIgnores()
+
+	for _, ignore := range ignores {
+		fmt.Fprintln(out, ignore)
 	}
 }

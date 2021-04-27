@@ -285,3 +285,18 @@ var fullUnlicense string
 
 //go:embed testfiles/mitWithParams.txt
 var fullMITWithParams string
+
+func Test_listIgnore(t *testing.T) {
+	// Create test outputs
+	tstOut := new(strings.Builder)
+
+	// Make the fake output
+	listIgnore(tstOut)
+
+	// Check results
+	lines := strings.Fields(tstOut.String())
+
+	if got := len(lines); got != 127 {
+		t.Error("Expected 127 lines, got ", got)
+	}
+}
