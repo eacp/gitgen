@@ -18,6 +18,12 @@ var ignoreHelpText string
 //go:embed licHelpText.txt
 var licHelpText string
 
+const lsHelp = `List template files:
+	Generate available .gitignore and license template files
+	Examples:
+		gitgen ls license
+		gitgen ls ignore`
+
 func main() {
 	// Pass the os arguments, the std out and the
 	// error out to the cli
@@ -154,6 +160,8 @@ func printHelp(subCommand string, out, err testableWriter) {
 	case "license", "lic", "l":
 		// Print the help for the license
 		out.WriteString(licHelpText)
+	case "list", "ls":
+		out.WriteString(lsHelp)
 
 	default:
 		// Unknown sub command

@@ -180,6 +180,13 @@ func Test_subcommandHelp(t *testing.T) {
 			[]string{"gg.exe", "h", "xd"},
 			true, "Unknown subcommand: 'xd'", "",
 		},
+
+		// List help
+		{
+			"Help for the list sub help list",
+			[]string{"gg.exe", "help", "ls"},
+			false, "", lsHelp,
+		},
 	}
 
 	for _, tt := range tests {
@@ -286,6 +293,17 @@ var fullUnlicense string
 //go:embed testfiles/mitWithParams.txt
 var fullMITWithParams string
 
+// Helper function to check the lines of a string builder
+// match an expected number
+func testLines(builder *strings.Builder, expected int, t *testing.T) {
+	// Check results
+	lines := strings.Fields(builder.String())
+
+	if got := len(lines); got != expected {
+		t.Errorf("Expected %d lines, got %d", expected, got)
+	}
+}
+
 func Test_listIgnore(t *testing.T) {
 	// Create test outputs
 	tstOut := new(strings.Builder)
@@ -293,12 +311,7 @@ func Test_listIgnore(t *testing.T) {
 	// Make the fake output
 	listIgnore(tstOut)
 
-	// Check results
-	lines := strings.Fields(tstOut.String())
-
-	if got := len(lines); got != 127 {
-		t.Error("Expected 127 lines, got ", got)
-	}
+	testLines(tstOut, 127, t)
 }
 
 func Test_listLic(t *testing.T) {
@@ -309,11 +322,7 @@ func Test_listLic(t *testing.T) {
 	listLic(tstOut)
 
 	// Check results
-	lines := strings.Fields(tstOut.String())
-
-	if got := len(lines); got != 13 {
-		t.Error("Expected 13 lines, got ", got)
-	}
+	testLines(tstOut, 13, t)
 }
 
 func Test_subcommandList(t *testing.T) {
@@ -334,4 +343,22 @@ func Test_subcommandList(t *testing.T) {
 	for _, tc := range cases {
 		tc.runTest(t)
 	}
+
+	// Test ignore and license print something
+
+	t.Run("Test ls ignore prints something", func(t *testing.T) {
+		tstOut := new(strings.Builder)
+
+		cli([]string{"gitgen", "ls", "ignore"}, tstOut, nil)
+
+		testLines(tstOut, 127, t)
+	})
+
+	t.Run("Test ls license prints something", func(t *testing.T) {
+		tstOut := new(strings.Builder)
+
+		cli([]string{"gitgen", "ls", "license"}, tstOut, nil)
+
+		testLines(tstOut, 13, t)
+	})
 }
