@@ -66,3 +66,11 @@ func TestWriteIgnore(t *testing.T) {
 		})
 	}
 }
+
+func TestListIgnores(t *testing.T) {
+	ignores := ListIgnores()
+
+	if got := len(ignores); got != 127 {
+		t.Error("Expected 127 git ignore files, got ", got)
+	}
+}

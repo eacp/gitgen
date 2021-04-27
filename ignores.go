@@ -27,3 +27,9 @@ func WriteIgnore(key string, w io.Writer) (n int, err error) {
 
 	return w.Write(data)
 }
+
+// ListIgnores returns a slice of strings containing
+// the names of all available git ignore templates
+func ListIgnores() []string {
+	return listAssets("ignores")
+}
