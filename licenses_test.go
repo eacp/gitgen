@@ -284,3 +284,11 @@ func TestWriteLicWithParams(t *testing.T) {
 		})
 	}
 }
+
+func TestListLicenses(t *testing.T) {
+	licenses := ListLicenses()
+
+	if got := len(licenses); got != 13 {
+		t.Error("Expected 13 license files, got ", got)
+	}
+}

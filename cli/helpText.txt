@@ -39,3 +39,8 @@ Generate Licenses
 		gitgen lic apache-2.0 -n eacp -y 2021
 		gitgen lic gpl-2.0 # This one takes no parameters
 		gitgen lic mit -y 2021 -n eacp > LICENSE # Creates LICENSE file
+List template files:
+	Generate available .gitignore and license template files
+	Examples:
+		gitgen ls license
+		gitgen ls ignore

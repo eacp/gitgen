@@ -82,3 +82,9 @@ func makeLicenseReplacer(fullname, year string) *strings.Replacer {
 		"<name of author>", fullname,
 	)
 }
+
+// ListLicenses returns a slice of strings containing
+// the names of all available license templates
+func ListLicenses() []string {
+	return listAssets("licenses")
+}
