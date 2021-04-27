@@ -300,3 +300,38 @@ func Test_listIgnore(t *testing.T) {
 		t.Error("Expected 127 lines, got ", got)
 	}
 }
+
+func Test_listLic(t *testing.T) {
+	// Create test outputs
+	tstOut := new(strings.Builder)
+
+	// Make the fake console output
+	listLic(tstOut)
+
+	// Check results
+	lines := strings.Fields(tstOut.String())
+
+	if got := len(lines); got != 13 {
+		t.Error("Expected 13 lines, got ", got)
+	}
+}
+
+func Test_subcommandList(t *testing.T) {
+	cases := []testCase{
+		{
+			"Incomplete list sub command",
+			[]string{"xd", "list"}, true,
+			"Usage: xd [list|ls] [ignore|i|license|l]", "",
+		},
+
+		{
+			"Bad thing to list",
+			[]string{"xd", "list", "wakandaforever"}, true,
+			"Usage: xd [list|ls] [ignore|i|license|l]", "",
+		},
+	}
+
+	for _, tc := range cases {
+		tc.runTest(t)
+	}
+}

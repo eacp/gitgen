@@ -119,8 +119,23 @@ func cli(args []string, out, errOut testableWriter) {
 		}
 
 	case "list", "ls":
-		listIgnore(out)
+		// Bad usage
+		if tokens < 3 {
+			// Make error message with the name of the program
+			fmt.Fprintf(errOut, "Usage: %v [list|ls] [ignore|i|license|l]", args[0])
 
+			return
+		}
+
+		switch args[2] {
+		case "ignore", "i":
+			listIgnore(out)
+		case "license", "lic", "l":
+			listLic(out)
+		default:
+			// Make error message with the name of the program
+			fmt.Fprintf(errOut, "Usage: %v [list|ls] [ignore|i|license|l]", args[0])
+		}
 	default:
 		// Unknown sub
 		fmt.Fprintf(errOut,
@@ -149,10 +164,20 @@ func printHelp(subCommand string, out, err testableWriter) {
 	}
 }
 
+// Print list of ignores to the output (stdout)
 func listIgnore(out testableWriter) {
 	ignores := gitgen.ListIgnores()
 
 	for _, ignore := range ignores {
 		fmt.Fprintln(out, ignore)
+	}
+}
+
+// The same but with licenses
+func listLic(out testableWriter) {
+	lics := gitgen.ListLicenses()
+
+	for _, lic := range lics {
+		fmt.Fprintln(out, lic)
 	}
 }
