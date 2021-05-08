@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/eacp/gitgen"
+	"go.eduardoandres.dev/gitgen"
 )
 
 //go:embed helpText.txt
